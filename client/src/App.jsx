@@ -11,11 +11,7 @@ function App() {
   useEffect(() => {
     const API_BASE_URL = import.meta.env.DEV
   ? 'http://localhost:5000'                      // 개발 중일 때
-  : 'https://fullweb-tjb9.onrender.com/';         // Render 배포 주소
-
-fetch(`${API_BASE_URL}/api/hello`);
-
-
+  : 'https://webf-tjb9.onrender.com';         // Render 배포 주소
 
     fetch('http://localhost:5000/api/hello')
       .then((res) => res.json())
