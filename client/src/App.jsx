@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
-import Home from './pages/home';
-import Login from './pages/login';
-import SignUp from './pages/SignUp';
-import Navbar from './components/Navbar';
+import Home from './pages/Home.jsx'
+import Login from './pages/Login.jsx';
+import SignUp from './pages/SignUp.jsx';
+import Navbar from './components/Navbar.jsx';
 
 function App() {
   const [message, setMessage] = useState('서버에서 아직 데이터 안 옴');
