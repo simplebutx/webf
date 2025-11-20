@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Routes, Route, Link } from 'react-router-dom';
-import Home from './pages/Home.jsx'
+import { Routes, Route } from 'react-router-dom';
+import Home from './pages/Home.jsx';
 import Login from './pages/Login.jsx';
 import SignUp from './pages/SignUp.jsx';
 import Navbar from './components/Navbar.jsx';
@@ -10,10 +10,10 @@ function App() {
 
   useEffect(() => {
     const API_BASE_URL = import.meta.env.DEV
-  ? 'http://localhost:5000'                      // 개발 중일 때
-  : 'https://webf-tjb9.onrender.com';         // Render 배포 주소
+      ? 'http://localhost:5000'                // 개발용
+      : 'https://webf-tjb9.onrender.com';     // ✅ Render 서버 (이거 하나만 사용)
 
-    fetch('http://localhost:5000/api/hello')
+    fetch(`${API_BASE_URL}/api/hello`)
       .then((res) => res.json())
       .then((data) => {
         setMessage(data.msg);
@@ -26,22 +26,18 @@ function App() {
 
   return (
     <>
-
-      <Navbar />   
+      <Navbar />
 
       <Routes>
-        
-      <Route path="/" element={<Home />} />
-      <Route path="/Login" element={<Login />} />
-      <Route path="/SignUp" element={<SignUp />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/Login" element={<Login />} />
+        <Route path="/SignUp" element={<SignUp />} />
       </Routes>
 
-    <div>
-      <h2>{message}</h2>
-    </div>
+      <div>
+        <h2>{message}</h2>
+      </div>
     </>
-    
-    
   );
 }
 
