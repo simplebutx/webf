@@ -42,3 +42,39 @@
 .signup-box button:hover {
   background: #3d57d6;
 }
+
+
+.popup {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  
+  background-color: rgba(0, 0, 0, 0.85);
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  animation: fadeInOut 2s ease forwards;
+  z-index: 9999;
+}
+
+/* 팝업 부드럽게 나타났다 사라지게 */
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-10px);
+  }
+  15% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0px);
+  }
+  85% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-10px);
+  }
+}

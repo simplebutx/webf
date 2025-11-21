@@ -11,7 +11,7 @@ function App() {
   useEffect(() => {
     const API_BASE_URL = import.meta.env.DEV
       ? 'http://localhost:5000'                // 개발용
-      : 'https://webf-tjb9.onrender.com';     // ✅ Render 서버 (이거 하나만 사용)
+      : 'https://webf-tjb9.onrender.com';     // Render 서버용
 
     fetch(`${API_BASE_URL}/api/hello`)
       .then((res) => res.json())
