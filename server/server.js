@@ -6,11 +6,24 @@ const bcrypt = require('bcrypt');
 
 const app = express();
 
-app.use(cors());
+const corsOptions = {
+  origin: [
+    'http://localhost:5173',          // 로컬 개발용 (Vite 기본 포트)
+    'https://webf-three.vercel.app',  // 배포된 프론트 주소
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type'],
+};
+
+app.use(cors(corsOptions));
+
+
 app.use(express.json());
 
 const db = mongoose.connection;
 const userCollection = db.collection('user');
+
+
 
 // MongoDB 연결
 mongoose
