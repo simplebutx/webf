@@ -15,7 +15,7 @@ function SignUp() {
     try {
       const API_BASE_URL = import.meta.env.DEV
         ? 'http://localhost:5000'
-        : 'https://fullweb-tjb9.onrender.com'; 
+        : 'https://webf-tjb9.onrender.com'; 
 
       const res = await fetch(`${API_BASE_URL}/SignUp`, {
         method: 'POST',
