@@ -1,18 +1,39 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './SignUp.css';
+import { apiFetch } from '../api';
 
 function Login() {
 
   const [email, setEmail] = useState('');
   const [pw, setPw] = useState('');
+  const [msg, setMsg] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({
-      email,
-      pw,
-    });
+
+    try {
+          const res = await apiFetch('/Login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',      
+            },
+            body: JSON.stringify({ email, password: pw }), 
+          });
+    
+          const data = await res.json();   
+          setMsg(data.msg);   
+    
+          if (res.ok) {       
+            setEmail('');
+            setPw('');
+          }
+          setTimeout(() => setMsg(''), 2000);
+        } catch (err) {      
+          console.error(err);
+          setMsg('요청 중 에러남');
+          setTimeout(() => setMsg(''), 2000);
+        }
   };
 
   return (
@@ -38,6 +59,7 @@ function Login() {
           <button type="submit">로그인</button>
         </form>
       </div>
+       {msg && <div className="popup">{msg}</div>}
     </div>
   );
 }

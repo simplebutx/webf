@@ -8,7 +8,7 @@ function SignUp() {
   const [email, setEmail] = useState('');
   const [pw, setPw] = useState('');
   const [pwCheck, setPwCheck] = useState('');
-   const [msg, setMsg] = useState('');
+  const [msg, setMsg] = useState('');
 
  const handleSubmit = async (e) => { 
     e.preventDefault(); // 기본적으로 form 안에서 submit 누르면 페이지가 새로고침됨 -> 폼 기본 새로고침 막기 (리액트는 spa이므로 새로고침하면 안됨)

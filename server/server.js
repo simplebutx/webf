@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 require('dotenv').config();
 
 const app = express();
+const db = mongoose.connection;
 
 
 // CORS 직접 처리
@@ -60,7 +61,7 @@ app.post('/SignUp', async (req, res) => {
   try {
     console.log('✅ /SignUp 요청 도착, body:', req.body);
 
-    const { email, password } = req.body;
+    const { email, password } = req.body;    // const email = req.body.email; const password = req.body.password; 
 
     if (!email || !password) {
       return res
@@ -68,7 +69,7 @@ app.post('/SignUp', async (req, res) => {
         .json({ msg: '이메일이랑 비밀번호 둘 다 보내줘야 함' });
     }
 
-    const db = mongoose.connection;
+
     const userCollection = db.collection('user');
 
     const existUser = await userCollection.findOne({ email });
@@ -93,6 +94,24 @@ app.post('/SignUp', async (req, res) => {
     res.status(500).json({ msg: '서버 에러' });
   }
 });
+
+app.post('/login', async (req, res)=>{
+  const { email, password } = req.body;
+  const user = await db.collection('user').findOne( { email }); 
+
+  if(!user) {
+    return res.status(401).json({msg: '존재하지 않는 이메일'});
+  }
+
+  const isMatch = await bcrypt.compare(password, user.password);
+
+  if(!isMatch) {
+    return res.status(401).json({msg: '비밀번호가 일치하지 않음'})
+  }
+
+  return res.json({msg: '로그인 성공'});
+  
+})
 
 
 // 서버 시작
