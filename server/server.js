@@ -5,9 +5,9 @@ require('dotenv').config();
 
 const app = express();
 
-// =======================
-// 1) CORS 직접 처리
-// =======================
+
+// CORS 직접 처리
+
 const allowedOrigins = [
   'http://localhost:5173',          // Vite 로컬
   'https://webf-three.vercel.app',  // Vercel 프론트
@@ -35,9 +35,9 @@ app.use((req, res, next) => {
 // JSON 파싱
 app.use(express.json());
 
-// =======================
-// 2) MongoDB 연결
-// =======================
+
+// MongoDB 연결
+
 mongoose
   .connect(process.env.MONGODB_URI)
   .then(() => {
@@ -47,16 +47,15 @@ mongoose
     console.error('❌ MongoDB 연결 실패:', err);
   });
 
-// =======================
-// 3) 테스트용 API
-// =======================
+// 테스트용 API
+
 app.get('/api/hello', (req, res) => {
   res.json({ msg: 'Node + MongoDB 연결 완료!' });
 });
 
-// =======================
-// 4) 회원가입 API
-// =======================
+
+// 회원가입 API
+
 app.post('/SignUp', async (req, res) => {
   try {
     console.log('✅ /SignUp 요청 도착, body:', req.body);
@@ -95,9 +94,9 @@ app.post('/SignUp', async (req, res) => {
   }
 });
 
-// =======================
-// 5) 서버 시작
-// =======================
+
+// 서버 시작
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log('server running on', PORT);

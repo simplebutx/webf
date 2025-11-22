@@ -4,16 +4,14 @@ import Home from './pages/Home.jsx';
 import Login from './pages/Login.jsx';
 import SignUp from './pages/SignUp.jsx';
 import Navbar from './components/Navbar.jsx';
+import { apiFetch } from './api.jsx';
+
 
 function App() {
   const [message, setMessage] = useState('서버에서 아직 데이터 안 옴');
 
   useEffect(() => {
-    const API_BASE_URL = import.meta.env.DEV
-      ? 'http://localhost:5000'                // 개발용
-      : 'https://webf-tjb9.onrender.com';     // Render 서버용
-
-    fetch(`${API_BASE_URL}/api/hello`)
+    apiFetch('/api/hello')
       .then((res) => res.json())
       .then((data) => {
         setMessage(data.msg);

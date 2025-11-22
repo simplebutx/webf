@@ -4,7 +4,7 @@ import './SignUp.css';
 
 function Login() {
 
-    const [email, setEmail] = useState('');
+  const [email, setEmail] = useState('');
   const [pw, setPw] = useState('');
 
   const handleSubmit = (e) => {
