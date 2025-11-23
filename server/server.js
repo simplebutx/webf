@@ -9,8 +9,11 @@ const app = express();
 const db = mongoose.connection;
 
 app.use(cors({
-  origin: 'http://localhost:5173',  // 리액트 dev 주소
-  credentials: true,                // 쿠키 허용
+  origin: [
+  'http://localhost:5173',                // 개발용
+  'https://webf-three.vercel.app',        // Vercel 배포 프론트
+],
+  credentials: true,
 }));
 
 //passport 라이브러리 세팅
