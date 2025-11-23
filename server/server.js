@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt');
 require('dotenv').config();
 const { ObjectId } = require('mongodb');
 
+
 const app = express();
 const db = mongoose.connection;
 
@@ -22,15 +23,23 @@ const passport = require('passport')
 const LocalStrategy = require('passport-local')
 const MongoStore = require('connect-mongo')
 
+const isProd = process.env.NODE_ENV === 'production';
+app.set('trust proxy', 1);
+
 app.use(session({
   secret: '암호화에 쓸 비번',
   resave : false,
   saveUninitialized : false,
-  cookie : {maxAge : 60* 60 * 1000},    // 쿠키 설정
   store : MongoStore.create({
     mongoUrl : process.env.MONGODB_URI,
-    dbName : 'Cluster0'
-  })
+    dbName : 'Cluster0',
+  }),
+  cookie: {
+    maxAge: 60 * 60 * 1000,
+    httpOnly: true,
+    sameSite: isProd ? 'none' : 'lax', 
+    secure: isProd,                 
+  }
 }))
 app.use(passport.initialize())
 app.use(passport.session()) 
@@ -42,24 +51,6 @@ const allowedOrigins = [
   'https://webf-three.vercel.app',  // Vercel 프론트
 ];
 
-// app.use((req, res, next) => {
-//   const origin = req.headers.origin;
-
-//   // 허용된 origin이면 허용
-//   if (!origin || allowedOrigins.includes(origin)) {
-//     res.header('Access-Control-Allow-Origin', origin || '*');
-//   }
-
-//   res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
-//   res.header('Access-Control-Allow-Headers', 'Content-Type');
-
-//   // preflight(OPTIONS) 요청은 여기서 바로 200으로 응답
-//   if (req.method === 'OPTIONS') {
-//     return res.sendStatus(200);
-//   }
-
-//   next();
-// });
 
 // JSON 파싱
 app.use(express.json());
