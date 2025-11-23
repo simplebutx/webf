@@ -48,8 +48,8 @@ app.use(session({
   }),
   cookie: {
     httpOnly: true,
-    secure: true,
-    sameSite: 'none', 
+    secure: isProd,
+    sameSite: isProd ? 'none' : 'lax',
     maxAge: 1000 * 60 * 60,          
   }
 }))
@@ -57,12 +57,6 @@ app.use(passport.initialize())
 app.use(passport.session()) 
 
 // CORS 직접 처리
-
-const allowedOrigins = [
-  'http://localhost:5173',          // Vite 로컬
-  'https://webf-three.vercel.app',  // Vercel 프론트
-];
-
 
 // JSON 파싱
 app.use(express.json());
@@ -200,6 +194,24 @@ function isLoggedIn(req, res, next) {
 app.get('/me', isLoggedIn, (req, res) => {
   console.log('현재 로그인 유저:', req.user);   
   res.json({ user: req.user });
+});
+
+app.post('/logout', (req, res, next) => {
+  req.logout(err => {
+    if (err) return next(err);
+
+    // 세션 삭제
+    req.session.destroy(() => {
+      // 쿠키도 지워주기 (이름은 connect.sid)
+      res.clearCookie('connect.sid', {
+        httpOnly: true,
+        sameSite: 'none',   // 배포환경 세팅에 맞게
+        secure: true,       // https라서 true
+      });
+
+      return res.json({ msg: '로그아웃 완료' });
+    });
+  });
 });
 
 
