@@ -15,6 +15,9 @@ function Navbar() {
         <Link to="/signup">
           <button className="nav-btn">회원가입</button>
         </Link>
+        <Link to="/me">
+          <button className="nav-btn">마이페이지</button>
+        </Link>
       </div>
     </nav>
   );
