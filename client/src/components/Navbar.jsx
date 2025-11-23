@@ -39,7 +39,7 @@ function Navbar() {
         <Link to="/me">
           <button className="nav-btn">마이페이지</button>
         </Link>
-         <button onClick={handleLogout}>로그아웃</button>
+         <button className="nav-btn" onClick={handleLogout}>로그아웃</button>
       </div>
     </nav>
   );
