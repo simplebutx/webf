@@ -9,11 +9,23 @@ const { ObjectId } = require('mongodb');
 const app = express();
 const db = mongoose.connection;
 
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://webf-three.vercel.app',
+];
+
 app.use(cors({
-  origin: [
-  'http://localhost:5173',                // 개발용
-  'https://webf-three.vercel.app',        // Vercel 배포 프론트
-],
+  origin: function (origin, callback) {
+    // 비브라우저 요청 (Postman 등) 허용
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    } else {
+      console.log('❌ CORS 차단됨: ', origin);
+      return callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
 }));
 
@@ -35,10 +47,10 @@ app.use(session({
     dbName : 'Cluster0',
   }),
   cookie: {
-    maxAge: 60 * 60 * 1000,
     httpOnly: true,
-    sameSite: isProd ? 'none' : 'lax', 
-    secure: isProd,                 
+    secure: true,
+    sameSite: 'none', 
+    maxAge: 1000 * 60 * 60,          
   }
 }))
 app.use(passport.initialize())
