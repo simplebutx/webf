@@ -13,6 +13,7 @@ export async function apiFetch(path, options = {}) {
       ...(options.headers || {}),
     },
     ...options,
+    credentials: 'include',
   });
 
   return res;

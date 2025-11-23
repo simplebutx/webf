@@ -6,6 +6,7 @@ import { apiFetch } from '../api';
 function SignUp() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [pw, setPw] = useState('');
   const [pwCheck, setPwCheck] = useState('');
   const [msg, setMsg] = useState('');
@@ -19,7 +20,7 @@ function SignUp() {
         headers: {
           'Content-Type': 'application/json',       // JSON 보낸다고 서버한테 알림
         },
-        body: JSON.stringify({ email, password: pw }),     // 실제 보낼 데이터
+        body: JSON.stringify({ username, password: pw }),     // 실제 보낼 데이터
       });
 
       const data = await res.json();   // 서버에서 온 응답 해석하기
@@ -28,6 +29,7 @@ function SignUp() {
       if (res.ok) {        // res.ok는 http 상태코드를 돌려주는데, 성공 범위 (200~299)면 성공으로 간주
         setName('');
         setEmail('');
+        setUsername('');
         setPw('');
         setPwCheck('');
       }
@@ -58,6 +60,13 @@ function SignUp() {
           placeholder="이메일"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+        />
+
+        <input
+          type="username"
+          placeholder="아이디"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
         />
 
         <input

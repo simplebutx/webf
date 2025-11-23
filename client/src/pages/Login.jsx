@@ -5,7 +5,7 @@ import { apiFetch } from '../api';
 
 function Login() {
 
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [pw, setPw] = useState('');
   const [msg, setMsg] = useState('');
 
@@ -18,14 +18,16 @@ function Login() {
             headers: {
               'Content-Type': 'application/json',      
             },
-            body: JSON.stringify({ email, password: pw }), 
+            body: JSON.stringify({ username, password: pw }), 
+            credentials: 'include',
           });
     
           const data = await res.json();   
+          console.log('me 결과:', data);
           setMsg(data.msg);   
     
           if (res.ok) {       
-            setEmail('');
+            setUsername('');
             setPw('');
           }
           setTimeout(() => setMsg(''), 2000);
@@ -43,10 +45,10 @@ function Login() {
           <h2>로그인</h2>
 
           <input
-            type="email"
-            placeholder="이메일"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="username"
+            placeholder="아이디"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
           />
 
           <input

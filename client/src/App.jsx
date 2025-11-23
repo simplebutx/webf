@@ -5,6 +5,7 @@ import Login from './pages/Login.jsx';
 import SignUp from './pages/SignUp.jsx';
 import Navbar from './components/Navbar.jsx';
 import { apiFetch } from './api.jsx';
+import MyPage from './pages/MyPage.jsx';
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/SignUp" element={<SignUp />} />
+        <Route path="/Login/me" element={<MyPage />} />
       </Routes>
 
       <div>
