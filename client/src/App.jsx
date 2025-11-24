@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate, useLocation} from 'react-router-dom';
 import Home from './pages/Home.jsx';
 import Login from './pages/Login.jsx';
 import SignUp from './pages/SignUp.jsx';
@@ -12,6 +12,7 @@ function App() {
   const [message, setMessage] = useState('서버에서 아직 데이터 안 옴');
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
+   const location = useLocation();
 
   useEffect(() => {
     apiFetch('/api/hello')
@@ -25,27 +26,30 @@ function App() {
       });
   }, []);
 
-  useEffect(() => {
-    const checkLogin = async () => {
-      try {
-        const res = await apiFetch('/me', { method: 'GET' });
+useEffect(() => {
+  // 로그인 체크 필요 없는 페이지
+  if (location.pathname === "/Login" || location.pathname === "/SignUp") return;
 
-        if (!res.ok) {
-          // 401 등 -> 로그인 안됨
-          setUser(null);
-          return;
-        }
+  const checkLogin = async () => {
+    try {
+      const res = await apiFetch('/me', { method: 'GET' });
 
-        const data = await res.json();
-        setUser(data.user); // { _id, username, ... }
-      } catch (err) {
-        console.error(err);
+      if (!res.ok) {
         setUser(null);
+        return;
       }
-    };
 
-    checkLogin();
-  }, []);
+      const data = await res.json();
+      setUser(data.user);
+    } catch (err) {
+      console.error(err);
+      setUser(null);
+    }
+  };
+
+  checkLogin();
+}, [location.pathname]);   // ← 중요!
+
 
   // 로그아웃 함수
   const handleLogout = async () => {
