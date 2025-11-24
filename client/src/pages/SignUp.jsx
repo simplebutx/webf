@@ -4,6 +4,7 @@ import './SignUp.css';
 import { apiFetch } from '../api';
 
 function SignUp() {
+  console.log('🔍 API_BASE_URL:', API_BASE_URL);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
