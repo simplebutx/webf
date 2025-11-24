@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './SignUp.css';
 import { apiFetch } from '../api';
+import { useNavigate } from 'react-router-dom';
 
-function Login() {
+function Login({ setUser }) {
 
   const [username, setUsername] = useState('');
   const [pw, setPw] = useState('');
   const [msg, setMsg] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,6 +31,8 @@ function Login() {
           if (res.ok) {       
             setUsername('');
             setPw('');
+            setUser(data.user); 
+            navigate('/');
           }
           setTimeout(() => setMsg(''), 2000);
         } catch (err) {      

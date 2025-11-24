@@ -3,7 +3,7 @@ import './Navbar.css';
 import { apiFetch } from '../api';
 import { useNavigate } from 'react-router-dom';
 
-function Navbar() {
+function Navbar({ user, onLogout }) {
   const navigate = useNavigate();
 
    const handleLogout = async () => {
@@ -26,20 +26,35 @@ function Navbar() {
   return (
     <nav className="navbar">
       <div className="nav-left">
-        <Link to="/" className="logo">MyProject</Link>
-      </div>
+                {/* ✅ 로그인 X : 로그인 / 회원가입만 */}
+        {!user && (
+          <>
+            <Link to="/login">
+              <button className="nav-btn">로그인</button>
+            </Link>
+            <Link to="/signup">
+              <button className="nav-btn">회원가입</button>
+            </Link>
+          </>
+        )}
 
-      <div className="nav-right">
-        <Link to="/login">
-          <button className="nav-btn">로그인</button>
-        </Link>
-        <Link to="/signup">
-          <button className="nav-btn">회원가입</button>
-        </Link>
-        <Link to="/me">
-          <button className="nav-btn">마이페이지</button>
-        </Link>
-         <button className="nav-btn" onClick={handleLogout}>로그아웃</button>
+        {/* ✅ 로그인 O : (옵션) 유저명, 마이페이지, 로그아웃 */}
+        {user && (
+          <>
+            <span className="nav-username">
+              {user.username} 님
+            </span>
+
+            <Link to="/me">
+              <button className="nav-btn">마이페이지</button>
+            </Link>
+
+            <button className="nav-btn" onClick={onLogout}>
+              로그아웃
+            </button>
+          </>
+        )}
+        <Link to="/" className="logo">MyProject</Link>
       </div>
     </nav>
   );

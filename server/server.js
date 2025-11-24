@@ -176,7 +176,13 @@ app.post('/login', async (req, res, next) => {
       if (!user) return res.status(401).json(info.message)
       req.logIn(user, (err) => {
         if (err) return next(err)
-        res.json({ msg: '로그인 성공' });
+
+        const safeUser = {
+        _id: user._id,
+        username: user.username,
+        createdAt: user.createdAt,
+      };
+        res.json({ msg: '로그인 성공' , user : safeUser });
       })
   })(req, res, next)
 }) 
