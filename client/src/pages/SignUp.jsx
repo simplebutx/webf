@@ -14,8 +14,6 @@ function SignUp() {
   const [pwCheck, setPwCheck] = useState('');
   const [msg, setMsg] = useState('');
 
-   
-   console.log('🔍 API_BASE_URL:', API_BASE_URL);
  const handleSubmit = async (e) => { 
     e.preventDefault(); // 기본적으로 form 안에서 submit 누르면 페이지가 새로고침됨 -> 폼 기본 새로고침 막기 (리액트는 spa이므로 새로고침하면 안됨)
 
@@ -28,7 +26,16 @@ function SignUp() {
         body: JSON.stringify({ username, password: pw }),     // 실제 보낼 데이터
       });
 
-      const data = await res.json();   // 서버에서 온 응답 해석하기
+      console.log("🔍 status:", res.status, "ok?:", res.ok);
+
+      const data = await res.json().catch(err => {
+      console.error("❌ JSON 파싱 에러:", err);
+      return {};
+    });
+    console.log("🔍 data:", data);
+
+    // 🔥🔥 msg가 실제로 무엇으로 들어오는지 확인
+    console.log("🔍 data.msg:", data.msg);
       setMsg(data.msg);    // data는 서버에서 온 데이터
 
       if (res.ok) {        // res.ok는 http 상태코드를 돌려주는데, 성공 범위 (200~299)면 성공으로 간주
@@ -46,7 +53,6 @@ function SignUp() {
     }
   };
 
-  console.log('🔍 msg:', msg);
   return (
     <div style={{ padding: '40px', textAlign: 'center' }}>
        <div className="signup-container">
