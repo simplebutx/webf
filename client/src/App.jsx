@@ -47,7 +47,7 @@ function App() {
     checkLogin();
   }, []);
 
-  // ⭐ 로그아웃 함수
+  // 로그아웃 함수
   const handleLogout = async () => {
     try {
       await apiFetch('/logout', { method: 'POST' });
@@ -64,15 +64,11 @@ function App() {
        <Navbar user={user} onLogout={handleLogout} />
 
       <Routes>
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={<Home message = {message}/>} />
       <Route path="/Login" element={<Login setUser={setUser} />} />
       <Route path="/SignUp" element={<SignUp />} />
       <Route path="/me" element={<MyPage />} />
       </Routes>
-
-      <div>
-        <h2>{message}</h2>
-      </div>
     </>
   );
 }
