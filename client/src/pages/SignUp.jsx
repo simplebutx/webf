@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './SignUp.css';
 import { apiFetch } from '../api';
+import { API_BASE_URL } from '../api';
 
 function SignUp() {
-  console.log('🔍 msg:', msg);
+ 
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -13,6 +14,8 @@ function SignUp() {
   const [pwCheck, setPwCheck] = useState('');
   const [msg, setMsg] = useState('');
 
+   console.log('🔍 msg:', msg);
+   console.log('🔍 API_BASE_URL:', API_BASE_URL);
  const handleSubmit = async (e) => { 
     e.preventDefault(); // 기본적으로 form 안에서 submit 누르면 페이지가 새로고침됨 -> 폼 기본 새로고침 막기 (리액트는 spa이므로 새로고침하면 안됨)
 
