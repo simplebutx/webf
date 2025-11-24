@@ -14,7 +14,7 @@ function SignUp() {
   const [pwCheck, setPwCheck] = useState('');
   const [msg, setMsg] = useState('');
 
-   console.log('🔍 msg:', msg);
+   
    console.log('🔍 API_BASE_URL:', API_BASE_URL);
  const handleSubmit = async (e) => { 
     e.preventDefault(); // 기본적으로 form 안에서 submit 누르면 페이지가 새로고침됨 -> 폼 기본 새로고침 막기 (리액트는 spa이므로 새로고침하면 안됨)
@@ -46,7 +46,7 @@ function SignUp() {
     }
   };
 
-  
+  console.log('🔍 msg:', msg);
   return (
     <div style={{ padding: '40px', textAlign: 'center' }}>
        <div className="signup-container">
