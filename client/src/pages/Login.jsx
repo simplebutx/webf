@@ -12,56 +12,38 @@ function Login({ setUser }) {
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    try {
-          const res = await apiFetch('/Login', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',      
-            },
-            body: JSON.stringify({ username, password: pw }), 
-            credentials: 'include',
-          });
-    
-             const text = await res.text();
-    let data;
+  try {
+    const res = await apiFetch('/Login', {
+      method: 'POST',
+      body: JSON.stringify({ username, password: pw }),
+    });
 
-    try {
-      data = JSON.parse(text);   // { msg: '로그인 성공', user: {...} } 같은 경우
-    } catch {
-      data = text;               // '아이디 DB에 없음', '비번불일치' 이런 경우
-    }
+    const data = await res.json();     
+    setMsg(data.msg);                      
 
-    console.log('me 결과:', data);
-
-    // 🔹 문자열이면 그대로, 객체면 msg 사용
-    const message = typeof data === 'string' ? data : data.msg;
-
-    setMsg(message || '로그인 실패');
-
-    // ❶ 실패(401 등)면 여기서 끝내고 로그인 페이지에 그대로 있게
-    if (!res.ok) {
+    if (!res.ok) {                        
       setTimeout(() => setMsg(''), 2000);
       return;
     }
 
-    // ❷ 성공일 때만 진행
     setUsername('');
     setPw('');
     setUser(data.user);
 
-    // 팝업 잠깐 보여주고 홈으로 이동하고 싶으면:
     setTimeout(() => {
       setMsg('');
       navigate('/');
-    }, 1000); // 1초 후 이동 (원하면 0으로 줄여도 되고)
-        } catch (err) {      
-          console.error(err);
-          setMsg('요청 중 에러남');
-          setTimeout(() => setMsg(''), 2000);
-        }
-  };
+    }, 2000);
+
+  } catch (err) {
+    console.error(err);
+    setMsg('요청 중 에러남');
+    setTimeout(() => setMsg(''), 2000);
+  }
+};
+
 
   return (
      <div style={{ padding: '40px', textAlign: 'center' }}>

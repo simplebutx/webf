@@ -170,22 +170,36 @@ passport.deserializeUser(async (id, done) => {
   }
 });
 
-app.post('/login', async (req, res, next) => {
+app.post('/login', (req, res, next) => {
   passport.authenticate('local', (error, user, info) => {
-      if (error) return res.status(500).json(error)
-      if (!user) return res.status(401).json(info.message)
-      req.logIn(user, (err) => {
-        if (err) return next(err)
 
-        const safeUser = {
+    if (error) {
+      console.error(error);
+      return res.status(500).json({ msg: '서버 에러 발생' });
+    }
+
+    if (!user) {
+      return res.status(401).json({ msg: info.message });
+    }
+
+    req.logIn(user, (err) => {
+      if (err) return next(err);
+
+      const safeUser = {
         _id: user._id,
         username: user.username,
         createdAt: user.createdAt,
       };
-        res.json({ msg: '로그인 성공' , user : safeUser });
-      })
-  })(req, res, next)
-}) 
+
+      return res.json({
+        msg: '로그인 성공',
+        user: safeUser,
+      });
+    });
+
+  })(req, res, next);
+});
+
 
 
 // 미들웨어
