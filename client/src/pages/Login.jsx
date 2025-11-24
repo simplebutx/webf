@@ -24,22 +24,38 @@ function Login({ setUser }) {
             credentials: 'include',
           });
     
-          const data = await res.json();   
-          console.log('me 결과:', data);
-          setMsg(data.msg);   
-    
-           if (!res.ok) {
-            setTimeout(() => setMsg(''), 2000);
-            return;
-            }
+             const text = await res.text();
+    let data;
 
-            // 성공일 때만 진행
-            setUsername('');
-            setPw('');
-            setUser(data.user); 
-            navigate('/');
+    try {
+      data = JSON.parse(text);   // { msg: '로그인 성공', user: {...} } 같은 경우
+    } catch {
+      data = text;               // '아이디 DB에 없음', '비번불일치' 이런 경우
+    }
 
-            setTimeout(() => setMsg(''), 2000);
+    console.log('me 결과:', data);
+
+    // 🔹 문자열이면 그대로, 객체면 msg 사용
+    const message = typeof data === 'string' ? data : data.msg;
+
+    setMsg(message || '로그인 실패');
+
+    // ❶ 실패(401 등)면 여기서 끝내고 로그인 페이지에 그대로 있게
+    if (!res.ok) {
+      setTimeout(() => setMsg(''), 2000);
+      return;
+    }
+
+    // ❷ 성공일 때만 진행
+    setUsername('');
+    setPw('');
+    setUser(data.user);
+
+    // 팝업 잠깐 보여주고 홈으로 이동하고 싶으면:
+    setTimeout(() => {
+      setMsg('');
+      navigate('/');
+    }, 1000); // 1초 후 이동 (원하면 0으로 줄여도 되고)
         } catch (err) {      
           console.error(err);
           setMsg('요청 중 에러남');
