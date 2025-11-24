@@ -27,18 +27,12 @@ function Navbar({ user, onLogout }) {
     <nav className="navbar">
       <div className="nav-left">
                 {/* ✅ 로그인 X : 로그인 / 회원가입만 */}
-        {!user && (
-          <>
-            <Link to="/login">
-              <button className="nav-btn">로그인</button>
-            </Link>
-            <Link to="/signup">
-              <button className="nav-btn">회원가입</button>
-            </Link>
-          </>
-        )}
-
-        {/* ✅ 로그인 O : (옵션) 유저명, 마이페이지, 로그아웃 */}
+      <Link to="/" className="logo">MyProject</Link>
+                {/* ✅ 로그인 O : (옵션) 유저명, 마이페이지, 로그아웃 */}
+        
+        
+      </div>
+      <div className="nav-right">
         {user && (
           <>
             <span className="nav-username">
@@ -54,8 +48,18 @@ function Navbar({ user, onLogout }) {
             </button>
           </>
         )}
-        <Link to="/" className="logo">MyProject</Link>
+        {!user && (
+          <>
+            <Link to="/login">
+              <button className="nav-btn">로그인</button>
+            </Link>
+            <Link to="/signup">
+              <button className="nav-btn">회원가입</button>
+            </Link>
+          </>
+        )}
       </div>
+        
     </nav>
   );
 }
