@@ -28,13 +28,18 @@ function Login({ setUser }) {
           console.log('me 결과:', data);
           setMsg(data.msg);   
     
-          if (res.ok) {       
+           if (!res.ok) {
+            setTimeout(() => setMsg(''), 2000);
+            return;
+            }
+
+            // 성공일 때만 진행
             setUsername('');
             setPw('');
             setUser(data.user); 
             navigate('/');
-          }
-          setTimeout(() => setMsg(''), 2000);
+
+            setTimeout(() => setMsg(''), 2000);
         } catch (err) {      
           console.error(err);
           setMsg('요청 중 에러남');
