@@ -6,6 +6,7 @@ import Login from './pages/Login.jsx';
 import SignUp from './pages/SignUp.jsx';
 import Navbar from './components/Navbar.jsx';
 import MyPage from './pages/MyPage.jsx';
+import CreatePost from './pages/CreatePost.jsx';
 import { apiFetch } from './api.jsx';
 
 function App() {
@@ -67,6 +68,7 @@ function App() {
         <Route path="/Login" element={<Login setUser={setUser} />} />
         <Route path="/SignUp" element={<SignUp />} />
         <Route path="/me" element={<MyPage user={user} />} />
+        <Route path='/CreatePost' element={<CreatePost/>} />
       </Routes>
     </>
   );

@@ -76,7 +76,7 @@ mongoose
 // 테스트용 API
 
 app.get('/api/hello', (req, res) => {
-  res.json({ msg: 'Node + MongoDB 연결 완료!' });
+  res.json({ msg: 'Node + MongoDB 연결 완료' });
 });
 
 
@@ -233,6 +233,14 @@ app.post('/logout', (req, res, next) => {
     });
   });
 });
+
+
+// 글쓰기
+app.post('/posts', async (req, res)=>{
+  const { title, content } = req.body;
+  await db.collection('posts').insertOne({authorId: req.user._id, title, content, createdAt: new Date()})
+  return res.json({msg: '글이 등록되었음'})
+})
 
 
 // 서버 시작

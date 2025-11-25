@@ -19,6 +19,9 @@ function Navbar({ user, onLogout }) {
             <Link to="/me">
               <button className="nav-btn">마이페이지</button>
             </Link>
+            <Link to="/CreatePost">
+              <button className="nav-btn">글쓰기</button>
+            </Link>
 
             <button className="nav-btn" onClick={onLogout}>
               로그아웃

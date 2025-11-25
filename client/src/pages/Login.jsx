@@ -11,24 +11,28 @@ function Login({ setUser }) {
   const [msg, setMsg] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {    // 로그인 버튼을 눌렀을 때 실행되는 함수
   e.preventDefault();
 
   try {
-    const res = await apiFetch('/Login', {
+    // 서버에 로그인 요청 보내기
+    const res = await apiFetch('/Login', {     
       method: 'POST',
       body: JSON.stringify({ username, password: pw }),
     });
 
-    const data = await res.json();     
+    // 서버에서 온 응답json 읽기
+    const data = await res.json();       
     setMsg(data.msg);                      
 
-    if (!res.ok) {                        
+    // 실패처리
+    if (!res.ok) {                         
       setTimeout(() => setMsg(''), 2000);
       return;
     }
 
-    setUsername('');
+    // 성공처리
+    setUsername('');                  
     setPw('');
     setUser(data.user);
 
@@ -48,9 +52,9 @@ function Login({ setUser }) {
   return (
      <div style={{ padding: '40px', textAlign: 'center' }}>
       <div className="signup-container">
-        <form className="signup-box" onSubmit={handleSubmit}>
+        <form className="signup-box" onSubmit={handleSubmit}>     {/* 폼 제출 될 때 실행될 함수 연결 */}
           <h2>로그인</h2>
-
+          
           <input
             type="username"
             placeholder="아이디"
