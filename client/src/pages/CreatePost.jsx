@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { apiFetch } from "../api";
+import './CreatePost.css';
 
 function CreatePost() {
 
@@ -25,16 +26,38 @@ const handleSubmit = async (e) => {
 }
 
     return(
-        <div>
-        <div>
-            <form onSubmit={handleSubmit}>
-                <input type="title" placeholder="제목" value={title}
-                onChange={(e)=> setTitle(e.target.value)} />
-                <input type="content" placeholder="내용" value={content}
-                onChange={(e)=> setContent(e.target.value)} />
-                <button type="submit">글쓰기</button>
-            </form>
-        </div>
+            <div className="post-page">
+      <div className="post-card">
+        <h2 className="post-title">새 글 작성</h2>
+
+        <form onSubmit={handleSubmit} className="post-form">
+          <label className="post-label">
+            제목
+            <input
+              type="text"
+              placeholder="제목을 입력하세요"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="post-input"
+            />
+          </label>
+
+          <label className="post-label">
+            내용
+            <textarea
+              placeholder="내용을 입력하세요"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              className="post-textarea"
+              rows={5}
+            />
+          </label>
+
+          <button type="submit" className="post-button">
+            글쓰기
+          </button>
+        </form>
+      </div>
         {msg && <div className="popup">{msg}</div>}
         </div>
     );
