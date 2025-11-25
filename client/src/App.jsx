@@ -9,6 +9,7 @@ import MyPage from './pages/MyPage.jsx';
 import CreatePost from './pages/CreatePost.jsx';
 import PostList from './pages/PostList.jsx'
 import { apiFetch } from './api.jsx';
+import PostDetail from './pages/PostDetail.jsx';
 
 function App() {
   const [message, setMessage] = useState('서버에서 아직 데이터 안 옴');
@@ -69,8 +70,9 @@ function App() {
         <Route path="/Login" element={<Login setUser={setUser} />} />
         <Route path="/SignUp" element={<SignUp />} />
         <Route path="/me" element={<MyPage user={user} />} />
-        <Route path='/CreatePost' element={<CreatePost/>} />
-        <Route path='/PostList' element={<PostList/>} />
+        <Route path='/CreatePost' element={<CreatePost />} />
+        <Route path='/PostList' element={<PostList />} />
+        <Route path='/posts/:id' element={<PostDetail />} />
       </Routes>
     </>
   );

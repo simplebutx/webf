@@ -6,6 +6,7 @@ require('dotenv').config();
 const { ObjectId } = require('mongodb');
 
 
+
 const app = express();
 const db = mongoose.connection;
 
@@ -239,13 +240,48 @@ app.post('/logout', (req, res, next) => {
 app.post('/posts', async (req, res)=>{
   const { title, content } = req.body;
   await db.collection('posts').insertOne({authorId: req.user._id, authorName: req.user.username, title, content, createdAt: new Date()})
+  
+  try {
+    if(!title || !content) {
+    return res.status(400).json({msg : '제목과 내용 모두 입력하시오'})
+  }
   return res.json({msg: '글이 등록되었음'})
+  } catch(err) {
+    console.log(err);
+    res.status(500).json({msg : '서버 오류 발생'});
+  }
+  
 })
 
+// 글가져오기
 app.get('/posts', async (req, res)=>{
   const posts = await db.collection('posts').find().toArray();
   res.json({posts});
 })
+
+// 디테일페이지 가져오기
+app.get('/posts/:id', async (req, res)=>{
+  try {
+  if(!req.user) {
+    return res.status(401).json({msg: '로그인해야지 보여주지롱 메롱'});
+  }
+  if (!ObjectId.isValid(req.params.id)) {
+      return res.status(404).json({ msg: '글이 존재하지 않습니다.' });
+    }
+
+  const post = await db.collection('posts').findOne({_id: new ObjectId(req.params.id)});
+  if(!post) {
+    return res.json.status(404).json({msg :'그런 글은 없어요'});
+  }
+  res.json(post);
+  }
+  catch(err) {
+    console.log(err);
+    res.status(500).json({msg : '서버 오류 발생'});
+  }
+  
+});
+
 
 // 서버 시작
 
