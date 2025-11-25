@@ -282,6 +282,84 @@ app.get('/posts/:id', async (req, res)=>{
   
 });
 
+// 글 수정기능
+
+app.put('/posts/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    // 1) 로그인 여부 체크
+    if (!req.user) {
+      return res.status(401).json({ msg: '로그인이 필요합니다.' });
+    }
+
+    // 2) 글 ID 형식 체크
+    if (!ObjectId.isValid(id)) {
+      return res.status(404).json({ msg: '잘못된 ID' });
+    }
+
+    // 3) 글 찾기
+    const post = await db.collection('posts').findOne({ _id: new ObjectId(id) });
+    if (!post) {
+      return res.status(404).json({ msg: '글을 찾을 수 없습니다.' });
+    }
+
+    // 4) 작성자 체크 (authorId vs 현재 로그인 유저)
+    if (post.authorId.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ msg: '본인이 작성한 글만 수정할 수 있습니다.' });
+    }
+
+    // 5) 수정 로직
+    const { title, content } = req.body;
+
+    await db.collection('posts').updateOne(
+      { _id: new ObjectId(id) },
+      { $set: { title, content } }
+    );
+
+    res.json({ msg: '수정 완료' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: '서버 오류' });
+  }
+});
+
+// 글삭제
+
+app.delete('/posts/:id', async (req, res)=>{
+  try {
+    const id = req.params.id;
+
+    // 1) 로그인 체크
+    if (!req.user) {
+      return res.status(401).json({ msg: '로그인이 필요합니다.' });
+    }
+
+    // 2) ObjectId 형식 체크
+    if (!ObjectId.isValid(id)) {
+      return res.status(404).json({ msg: '잘못된 ID입니다.' });
+    }
+
+    // 3) 글 찾기
+    const post = await db.collection('posts').findOne({ _id: new ObjectId(id) });
+    if (!post) {
+      return res.status(404).json({ msg: '글을 찾을 수 없습니다.' });
+    }
+
+    // 4) 작성자 체크
+    if (String(post.authorId) !== String(req.user._id)) {
+      return res.status(403).json({ msg: '본인이 작성한 글만 삭제할 수 있습니다.' });
+    }
+
+    // 5) 삭제
+    await db.collection('posts').deleteOne({ _id: new ObjectId(id) });
+
+    res.json({ msg: '삭제 완료' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: '서버 오류' });
+  }
+});
 
 // 서버 시작
 
@@ -289,3 +367,6 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log('server running on', PORT);
 });
+
+
+// 추가할것 : 댓글기능, 검색기능, 마이페이지에 내가 작성한 글 모음, 이미지 업로드기능 (아마존)

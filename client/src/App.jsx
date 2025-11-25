@@ -1,4 +1,3 @@
-// src/App.jsx
 import { useEffect, useState } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import Home from './pages/Home.jsx';
@@ -10,6 +9,7 @@ import CreatePost from './pages/CreatePost.jsx';
 import PostList from './pages/PostList.jsx'
 import { apiFetch } from './api.jsx';
 import PostDetail from './pages/PostDetail.jsx';
+import PostEdit from './pages/PostEdit.jsx';
 
 function App() {
   const [message, setMessage] = useState('서버에서 아직 데이터 안 옴');
@@ -72,7 +72,8 @@ function App() {
         <Route path="/me" element={<MyPage user={user} />} />
         <Route path='/CreatePost' element={<CreatePost />} />
         <Route path='/PostList' element={<PostList />} />
-        <Route path='/posts/:id' element={<PostDetail />} />
+        <Route path='/posts/:id' element={<PostDetail user={user}/>} />
+        <Route path='/posts/:id/edit' element={<PostEdit user={user}/>} />
       </Routes>
     </>
   );
