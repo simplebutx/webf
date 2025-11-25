@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { apiFetch } from "../api";
 import './CreatePost.css';
+import { useNavigate } from 'react-router-dom';
 
 function CreatePost() {
 
 const [title, setTitle] = useState('');
 const [content, setContent] = useState('');
 const [msg, setMsg] = useState('');
-
+const navigate = useNavigate();
 
 const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,11 +23,14 @@ const handleSubmit = async (e) => {
 
     setTitle('');
     setContent('');
-    setTimeout(() => setMsg(''), 2000);
+    setTimeout(() => {
+      setMsg('');
+      navigate('/');
+    }, 2000);
 }
 
     return(
-            <div className="post-page">
+    <div className="post-page">
       <div className="post-card">
         <h2 className="post-title">새 글 작성</h2>
 

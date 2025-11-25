@@ -22,6 +22,7 @@ function Navbar({ user, onLogout }) {
             <Link to="/CreatePost">
               <button className="nav-btn">글쓰기</button>
             </Link>
+            
 
             <button className="nav-btn" onClick={onLogout}>
               로그아웃

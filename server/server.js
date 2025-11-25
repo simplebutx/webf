@@ -238,10 +238,14 @@ app.post('/logout', (req, res, next) => {
 // 글쓰기
 app.post('/posts', async (req, res)=>{
   const { title, content } = req.body;
-  await db.collection('posts').insertOne({authorId: req.user._id, title, content, createdAt: new Date()})
+  await db.collection('posts').insertOne({authorId: req.user._id, authorName: req.user.username, title, content, createdAt: new Date()})
   return res.json({msg: '글이 등록되었음'})
 })
 
+app.get('/posts', async (req, res)=>{
+  const posts = await db.collection('posts').find().toArray();
+  res.json({posts});
+})
 
 // 서버 시작
 
