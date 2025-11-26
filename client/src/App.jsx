@@ -10,7 +10,7 @@ import PostList from './pages/PostList.jsx'
 import { apiFetch } from './api.jsx';
 import PostDetail from './pages/PostDetail.jsx';
 import PostEdit from './pages/PostEdit.jsx';
-import './app.css'
+import './App.css'
 
 function App() {
   const [message, setMessage] = useState('서버에서 아직 데이터 안 옴');
