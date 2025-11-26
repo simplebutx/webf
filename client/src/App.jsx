@@ -10,9 +10,11 @@ import PostList from './pages/PostList.jsx'
 import { apiFetch } from './api.jsx';
 import PostDetail from './pages/PostDetail.jsx';
 import PostEdit from './pages/PostEdit.jsx';
+import './app.css'
 
 function App() {
   const [message, setMessage] = useState('서버에서 아직 데이터 안 옴');
+  const [msg, setMsg] = useState('');
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
@@ -40,6 +42,8 @@ function App() {
 
         const data = await res.json();
         setUser(data.user);
+
+        
       } catch (err) {
         console.error(err);
         setUser(null);
@@ -51,15 +55,22 @@ function App() {
 
   // 로그아웃
   const handleLogout = async () => {
-    try {
-      await apiFetch('/logout', { method: 'POST' });
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setUser(null);
+  try {
+    const res = await apiFetch('/logout', { method: 'POST' });
+    const data = await res.json();
+    setMsg(data.msg || '로그아웃 되었습니다.');
+    setUser(null);
+    setTimeout(() => {
+      setMsg('');
       navigate('/');
-    }
-  };
+    }, 2000);
+  } catch (err) {
+    console.error(err);
+    setMsg('로그아웃 중 오류가 발생했습니다.');
+    setTimeout(() => setMsg(''), 2000);
+  }
+};
+
 
   return (
     <>
@@ -75,6 +86,8 @@ function App() {
         <Route path='/posts/:id' element={<PostDetail user={user}/>} />
         <Route path='/posts/:id/edit' element={<PostEdit user={user}/>} />
       </Routes>
+
+      {msg && (<div className="popup">{msg}</div>)}
     </>
   );
 }
